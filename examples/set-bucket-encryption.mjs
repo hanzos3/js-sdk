@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,10 +56,10 @@ await s3Client.setBucketEncryption('test-bucket', encryptionConfig)
  * KMS ID based SSE Encryption
  * Sample Configuration:
  *
- * export MINIO_KMS_KES_ENDPOINT=https://play.min.io:7373;
+ * export MINIO_KMS_KES_ENDPOINT=https://s3.hanzo.ai:7373;
  * export MINIO_KMS_KES_KEY_FILE=root.key;
  * export MINIO_KMS_KES_CERT_FILE=root.cert;
- * export MINIO_KMS_KES_KEY_NAME=my-minio-key; //KMS Key ID
+ * export MINIO_KMS_KES_KEY_NAME=my-hanzos3-key; //KMS Key ID
  *
  * Start the server.
  *
@@ -70,7 +70,7 @@ await s3Client.setBucketEncryption('test-bucket', encryptionConfig)
  *    metaData: {
  *      'content-type': 'application/octet-stream',
  *      'x-amz-server-side-encryption': 'aws:kms',
- *      'x-amz-server-side-encryption-aws-kms-key-id': 'my-minio-key', // the key will be printed here.
+ *      'x-amz-server-side-encryption-aws-kms-key-id': 'my-hanzos3-key', // the key will be printed here.
  *      example: '5678',
  *      testing: '1234'
  *    },
@@ -84,7 +84,7 @@ const kmsIdEncryptionConfig = {
   Rule: [
     {
       ApplyServerSideEncryptionByDefault: {
-        KMSMasterKeyID: 'my-minio-key', //as per env value
+        KMSMasterKeyID: 'my-hanzos3-key', //as per env value
         SSEAlgorithm: 'aws:kms', // this is important
       },
     },

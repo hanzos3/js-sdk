@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016-2019 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016-2019 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ const s3Client = new Minio.Client({
 })
 
 const config = new Minio.NotificationConfig()
-const arn = Minio.buildARN('minio', 'sqs', '', '1', 'webhook')
+const arn = Minio.buildARN('hanzos3', 'sqs', '', '1', 'webhook')
 const queue = new Minio.QueueConfig(arn)
 
 queue.addFilterSuffix('.jpg')

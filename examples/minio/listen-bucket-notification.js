@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-// Note that `listenBucketNotification` is only available for MinIO, and not
-// Amazon.
+// Note that `listenBucketNotification` is only available for Hanzo S3 (and MinIO),
+// and not Amazon.
 
 import * as Minio from 'minio'
 

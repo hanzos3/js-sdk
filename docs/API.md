@@ -1,14 +1,14 @@
-# JavaScript Client API Reference [![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io)
+# JavaScript Client API Reference [![Slack](https://img.shields.io/badge/discord-hanzo-blue)](https://discord.gg/hanzo)
 
-## Initialize MinIO Client object.
+## Initialize Hanzo S3 Client object.
 
-## MinIO
+## Hanzo S3
 
 ```js
 import * as Minio from 'minio'
 
 const minioClient = new Minio.Client({
-  endPoint: 'play.min.io',
+  endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
   accessKey: 'Q3AM3UQ867SPQQA43P2F',
@@ -56,7 +56,7 @@ const s3Client = new Minio.Client({
 
 ## 1. Constructor
 
-<a name="MinioClient_endpoint"></a>
+<a name="HanzoS3Client_endpoint"></a>
 
 ### new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey, region, transport, sessionToken, partSize})
 
@@ -83,13 +83,13 @@ const s3Client = new Minio.Client({
 
 **Example**
 
-## Create client for MinIO
+## Create client for Hanzo S3
 
 ```js
 import * as Minio from 'minio'
 
 const minioClient = new Minio.Client({
-  endPoint: 'play.min.io',
+  endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
   accessKey: 'Q3AM3UQ867SPQQA43P2F',
@@ -130,7 +130,7 @@ import * as fs from 'fs'
 import * as https from 'https'
 
 const s3Client = new Minio.Client({
-  endPoint: 'play.min.io',
+  endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
   accessKey: 'Q3AM3UQ867SPQQA43P2F',
@@ -504,7 +504,7 @@ Set replication config on a Bucket
 **Example**
 
 ```js
-const arnFromMcCli = 'arn:minio:replication::b22d653b-e4fb-4c5d-8140-7694c8e72ed4:dest-bucket'
+const arnFromMcCli = 'arn:hanzos3:replication::b22d653b-e4fb-4c5d-8140-7694c8e72ed4:dest-bucket'
 const replicationConfig = {
   role: arnFromMcCli,
   rules: [
@@ -1557,8 +1557,8 @@ Compose an object from parts
 
 | Param              | Type       | Description                                                                                                                                                                          |
 | ------------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `destObjConfig`    | _object_   | Destination Object configuration of the type [CopyDestinationOptions](https://github.com/minio/minio-js/blob/master/src/helpers.js)                                                  |
-| `sourceObjectList` | _object[]_ | Array of object(parts) source to compose into an object. Each part configuration should be of type [CopySourceOptions](https://github.com/minio/minio-js/blob/master/src/helpers.js) |
+| `destObjConfig`    | _object_   | Destination Object configuration of the type [CopyDestinationOptions](https://github.com/hanzos3/js-sdk/blob/master/src/helpers.js)                                                  |
+| `sourceObjectList` | _object[]_ | Array of object(parts) source to compose into an object. Each part configuration should be of type [CopySourceOptions](https://github.com/hanzos3/js-sdk/blob/master/src/helpers.js) |
 
 **Example 1**
 
@@ -1884,7 +1884,7 @@ minioClient.removeAllBucketNotification('my-bucketname', function (e) {
 
 Listen for notifications on a bucket. Additionally one can provider
 filters for prefix, suffix and events. There is no prior set bucket notification
-needed to use this API. This is an MinIO extension API where unique identifiers
+needed to use this API. This is a Hanzo S3 extension API where unique identifiers
 are registered and unregistered by the server automatically based on incoming requests.
 
 Returns an `EventEmitter`, which will emit a `notification` event carrying the record.
@@ -1900,7 +1900,7 @@ To stop listening, call `.stop()` on the returned `EventEmitter`.
 | `suffix`     | _string_ | Object key suffix to filter notifications for.  |
 | `events`     | _Array_  | Enables notifications for specific event types. |
 
-See [here](https://github.com/minio/minio-js/blob/master/examples/minio/listen-bucket-notification.js) for a full example.
+See [here](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js) for a full example.
 
 ```js
 const listener = minioClient.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
@@ -1978,4 +1978,4 @@ minioClient.setRequestOptions({ rejectUnauthorized: false })
 
 ## 7. Explore Further
 
-- [Build your own Shopping App Example](https://github.com/minio/minio-js-store-app)
+- [Build your own Shopping App Example](https://github.com/hanzos3/js-sdk-store-app)

@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2015 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2015 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -429,7 +429,7 @@ export function sanitizeETag(etag = ''): string {
 
 export function toMd5(payload: Binary): string {
   // use string from browser and buffer from nodejs
-  // browser support is tested only against minio server
+  // browser support is tested only against Hanzo S3 server
   return crypto.createHash('md5').update(Buffer.from(payload)).digest().toString('base64')
 }
 

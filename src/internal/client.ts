@@ -139,7 +139,7 @@ import * as xmlParsers from './xml-parser.ts'
 const xml = new xml2js.Builder({ renderOpts: { pretty: false }, headless: true })
 
 // will be replaced by bundler.
-const Package = { version: process.env.MINIO_JS_PACKAGE_VERSION || 'development' }
+const Package = { version: process.env.HANZOS3_JS_PACKAGE_VERSION || 'development' }
 
 const requestOptionProperties = [
   'agent',
@@ -330,10 +330,10 @@ export class TypedClient {
     // User Agent should always following the below style.
     // Please open an issue to discuss any new changes here.
     //
-    //       MinIO (OS; ARCH) LIB/VER APP/VER
+    //       HanzoS3 (OS; ARCH) LIB/VER APP/VER
     //
     const libraryComments = `(${process.platform}; ${process.arch})`
-    const libraryAgent = `MinIO ${libraryComments} minio-js/${Package.version}`
+    const libraryAgent = `HanzoS3 ${libraryComments} minio-js/${Package.version}`
     // User agent block ends.
 
     this.transport = transport
@@ -444,7 +444,7 @@ export class TypedClient {
   /**
    *   Set application specific information.
    *   Generates User-Agent in the following style.
-   *   MinIO (OS; ARCH) LIB/VER APP/VER
+   *   HanzoS3 (OS; ARCH) LIB/VER APP/VER
    */
   setAppInfo(appName: string, appVersion: string) {
     if (!isString(appName)) {
@@ -557,7 +557,7 @@ export class TypedClient {
       }
     }
 
-    // Use any request option specified in minioClient.setRequestOptions()
+    // Use any request option specified in client.setRequestOptions()
     reqOptions = Object.assign({}, this.reqOptions, reqOptions)
 
     return {
@@ -1147,7 +1147,7 @@ export class TypedClient {
 
   /**
    * download object content to a file.
-   * This method will create a temp file named `${filename}.${base64(etag)}.part.minio` when downloading.
+   * This method will create a temp file named `${filename}.${base64(etag)}.part.hanzos3` when downloading.
    *
    * @param bucketName - name of the bucket
    * @param objectName - name of the object
@@ -1170,7 +1170,7 @@ export class TypedClient {
       let partFileStream: stream.Writable
       const objStat = await this.statObject(bucketName, objectName, getOpts)
       const encodedEtag = Buffer.from(objStat.etag).toString('base64')
-      const partFile = `${filePath}.${encodedEtag}.part.minio`
+      const partFile = `${filePath}.${encodedEtag}.part.hanzos3`
 
       await fsp.mkdir(path.dirname(filePath), { recursive: true })
 
@@ -2472,7 +2472,7 @@ export class TypedClient {
     let encryptionObj = encryptionConfig
     if (_.isEmpty(encryptionConfig)) {
       encryptionObj = {
-        // Default MinIO Server Supported Rule
+        // Default Hanzo S3 Server Supported Rule
         Rule: [
           {
             ApplyServerSideEncryptionByDefault: {

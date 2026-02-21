@@ -32,7 +32,7 @@ const MAX_RETRIES = 1
 const BASE_DELAY_MS = 100 // Base delay for exponential backoff
 const MAX_DELAY_MS = 60000 // Max delay for exponential backoff
 
-// Retryable error codes for HTTP ( ref: minio-go)
+// Retryable error codes for HTTP (ref: Go SDK)
 export const retryHttpCodes: Record<string, boolean> = {
   408: true,
   429: true,

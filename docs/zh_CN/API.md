@@ -1,14 +1,14 @@
-# JavaScript Client API参考文档 [![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io)
+# JavaScript Client API参考文档 [![Slack](https://img.shields.io/badge/discord-hanzo-blue)](https://discord.gg/hanzo)
 
-## 初使化Minio Client object.
+## 初始化Hanzo S3 Client object.
 
-## MinIO
+## Hanzo S3
 
 ```js
 import * as Minio from 'minio'
 
 const minioClient = new Minio.Client({
-    endPoint: 'play.min.io',
+    endPoint: 's3.hanzo.ai',
     port: 9000,
   	useSSL: true,
     accessKey: 'Q3AM3UQ867SPQQA43P2F',
@@ -44,7 +44,7 @@ const s3Client = new Minio.Client({
 
 ## 1.  构造函数
 
-<a name="MinioClient_endpoint"></a>
+<a name="HanzoS3Client_endpoint"></a>
 ###  new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey})
 
 |     |
@@ -75,7 +75,7 @@ __示例__
 import * as Minio from 'minio'
 
 const minioClient = new Minio.Client({
-    endPoint: 'play.min.io',
+    endPoint: 's3.hanzo.ai',
     port: 9000,
     useSSL: true,
     accessKey: 'Q3AM3UQ867SPQQA43P2F',
@@ -929,7 +929,7 @@ __参数__
 | `suffix`  | _string_  | 用于过滤通知的对象名称后缀。 |
 | `events`  | _Array_ | 在指定事件类型上开启通知。 |
 
-这里是你要的[完整示例](https://github.com/minio/minio-js/blob/master/examples/minio/listen-bucket-notification.js)，拿走不谢。
+这里是你要的[完整示例](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js)，拿走不谢。
 
 ```js
 const listener = minioClient.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
@@ -984,4 +984,4 @@ await minioClient.setBucketPolicy('my-bucketname', JSON.stringify(policy))
 ## 6. 了解更多
 
 
-- [创建属于你的购物APP示例](https://github.com/minio/minio-js-store-app)
+- [创建属于你的购物APP示例](https://github.com/hanzos3/js-sdk-store-app)

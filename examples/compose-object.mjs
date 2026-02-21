@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ const destOption = new Minio.CopyDestinationOptions({
   /** Other possible options */
   /* Encryption:{
         type:Helpers.ENCRYPTION_TYPES.KMS,
-        KMSMasterKeyID:'my-minio-key', //as per env value
+        KMSMasterKeyID:'my-hanzos3-key', //as per env value
         SSEAlgorithm:"aws:kms" // this is important
       }, */
   // UserTags:"tagKeyOverride=tagValueOverride&tgK2Ov=tgK2Ov",//querystring format.

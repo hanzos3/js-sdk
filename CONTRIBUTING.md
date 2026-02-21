@@ -1,9 +1,9 @@
-### Setup your minio-js Github Repository
-Fork [minio-js upstream](https://github.com/minio/minio-js/fork) source repository to your own personal repository.
+### Setup your js-sdk Github Repository
+Fork [js-sdk upstream](https://github.com/hanzos3/js-sdk/fork) source repository to your own personal repository.
 
 ```bash
-$ git clone https://github.com/$USER_ID/minio-js
-$ cd minio-js
+$ git clone https://github.com/$USER_ID/js-sdk
+$ cd js-sdk
 ```
 
 ### Install npm dependencies
@@ -32,7 +32,7 @@ $ npm run test
 
 ###  Developer Guidelines
 
-``minio-js`` welcomes your contribution. To make the process as seamless as possible, we ask for the following:
+``js-sdk`` welcomes your contribution. To make the process as seamless as possible, we ask for the following:
 
 * Go ahead and fork the project and make your changes. We encourage pull requests to discuss code changes.
     - Fork it

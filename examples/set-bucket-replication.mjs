@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2021 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ const s3Client = new Minio.Client({
   secretKey: 'YOUR-SECRETACCESSKEY',
 })
 
-const arnFromMcCli = 'arn:minio:replication::b22d653b-e4fb-4c5d-8140-7694c8e72ed4:dest-bucket'
+const arnFromMcCli = 'arn:hanzos3:replication::b22d653b-e4fb-4c5d-8140-7694c8e72ed4:dest-bucket'
 const replicationConfig = {
   role: arnFromMcCli,
   rules: [
@@ -63,13 +63,13 @@ try {
 }
 
 /**
- * Steps to configure bucket replication
+ * Steps to configure bucket replication (using Hanzo S3 server)
  * Create Site 1
- * CI=true  MINIO_ROOT_USER=minio MINIO_ROOT_PASSWORD=minio123 minio server /tmp/sem{1...4}  --address ":22000" --console-address ":9025"
- * mc alias set local22 http://localhost:22000 minio minio123
+ * CI=true  MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem{1...4}  --address ":22000" --console-address ":9025"
+ * mc alias set local22 http://localhost:22000 admin admin123
  * Create Site 2
- * CI=true  MINIO_ROOT_USER=minio MINIO_ROOT_PASSWORD=minio123 minio server /tmp/sem-1{1...4}  --address ":23000" --console-address ":9035"
- * mc alias set local23 http://localhost:23000 minio minio123
+ * CI=true  MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem-1{1...4}  --address ":23000" --console-address ":9035"
+ * mc alias set local23 http://localhost:23000 admin admin123
  *
  * mc mb local22/source-bucket
  * mc mb local23/dest-bucket
@@ -77,12 +77,12 @@ try {
  * mc version enable local23/dest-bucket
  *
  *
- * ➜ mc replicate add local22/source-bucket --remote-bucket http://minio:minio123@localhost:23000/dest-bucket --priority 1
+ * mc replicate add local22/source-bucket --remote-bucket http://admin:admin123@localhost:23000/dest-bucket --priority 1
  *
  * mc replicate ls local22/source-bucket  --json| jq .rule.Destination.Bucket  # to obtain the arn
  *
  * Result
- * ➜ mc replicate ls local22/source-bucket --json
+ * mc replicate ls local22/source-bucket --json
  *
- * mc replicate add local22/source-bucket --remote-bucket http://minio:minio123@localhost:23000/dest-bucket --replicate "existing-objects,delete,delete-marker" --priority 1 --tags "key1=value1&key2=value2" --bandwidth "2G" --sync
+ * mc replicate add local22/source-bucket --remote-bucket http://admin:admin123@localhost:23000/dest-bucket --replicate "existing-objects,delete,delete-marker" --priority 1 --tags "key1=value1&key2=value2" --bandwidth "2G" --sync
  */

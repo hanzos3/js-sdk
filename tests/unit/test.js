@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2016 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ describe('Helpers', () => {
     assert.equal(makeDateLong(date), '20170811T172634Z')
   })
 
-  // Adopted from minio-go sdk
+  // Adopted from Go SDK
   const oneGB = 1024 * 1024 * 1024
   const fiveGB = 5 * oneGB
 
@@ -104,7 +104,7 @@ describe('Helpers', () => {
     })
   })
   it('Even split of Sizes Test cases ', () => {
-    // Adopted from minio-go sdk
+    // Adopted from Go SDK
     const expectedSplitsTestCases = [
       {
         size: 0,
@@ -502,7 +502,7 @@ describe('Client', function () {
         accessKey: 'accesskey',
         secretKey: 'secretkey',
       })
-      assert.equal(`MinIO (${process.platform}; ${process.arch}) minio-js/${Package.version}`, client.userAgent)
+      assert.equal(`HanzoS3 (${process.platform}; ${process.arch}) minio-js/${Package.version}`, client.userAgent)
     })
     it('should set user agent', () => {
       var client = new Minio.Client({
@@ -512,7 +512,7 @@ describe('Client', function () {
       })
       client.setAppInfo('test', '3.2.1')
       assert.equal(
-        `MinIO (${process.platform}; ${process.arch}) minio-js/${Package.version} test/3.2.1`,
+        `HanzoS3 (${process.platform}; ${process.arch}) minio-js/${Package.version} test/3.2.1`,
         client.userAgent,
       )
     })
@@ -524,7 +524,7 @@ describe('Client', function () {
       })
       client.setAppInfo('test', '3.2.1')
       assert.equal(
-        `MinIO (${process.platform}; ${process.arch}) minio-js/${Package.version} test/3.2.1`,
+        `HanzoS3 (${process.platform}; ${process.arch}) minio-js/${Package.version} test/3.2.1`,
         client.userAgent,
       )
     })

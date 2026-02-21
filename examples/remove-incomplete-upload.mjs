@@ -1,5 +1,5 @@
 /*
- * MinIO Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2024 MinIO, Inc.
+ * Hanzo S3 Javascript Library for Amazon S3 Compatible Cloud Storage, (C) 2024 Hanzo AI, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ const s3Client = new Minio.Client({
   secretKey: 'YOUR-SECRETACCESSKEY',
 })
 
-// Note: It is a no-op in MinIO
+// Note: It is a no-op in Hanzo S3
 // Can be used/tested with AWS S3.
 try {
   await s3Client.removeIncompleteUpload('my-bucketname', 'my-objectname')

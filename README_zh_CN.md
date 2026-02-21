@@ -1,10 +1,11 @@
-# 适用于Amazon S3兼容云存储的Minio JavaScript Library [![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io)
+# Hanzo S3 JavaScript SDK - Amazon S3兼容云存储
 
+[![CI](https://img.shields.io/github/actions/workflow/status/hanzos3/js-sdk/test.yml?branch=master)](https://github.com/hanzos3/js-sdk/actions)
 [![NPM](https://nodei.co/npm/minio.png)](https://nodei.co/npm/minio/)
 
-MinIO JavaScript Client SDK提供简单的API来访问任何Amazon S3兼容的对象存储服务。
+Hanzo S3 JavaScript Client SDK提供简单的API来访问任何Amazon S3兼容的对象存储服务，包括 [Hanzo S3](https://github.com/hanzoai/s3)。
 
-本快速入门指南将向您展示如何安装客户端SDK并执行示例JavaScript程序。有关API和示例的完整列表，请参阅[JavaScript客户端API参考](https://docs.min.io/enterprise/aistor-object-store/developers/minio-drivers/#javascript)文档。
+本快速入门指南将向您展示如何安装客户端SDK并执行示例JavaScript程序。有关API和示例的完整列表，请参阅[JavaScript客户端API参考](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md)文档。
 
 本文假设你已经安装了[nodejs](http://nodejs.org/) 。
 
@@ -15,15 +16,15 @@ MinIO JavaScript Client SDK提供简单的API来访问任何Amazon S3兼容的�
 ## 下载并安装源码
 
 ```sh
-git clone https://github.com/minio/minio-js
-cd minio-js
+git clone https://github.com/hanzos3/js-sdk
+cd js-sdk
 npm install
 npm install -g
 ```
 
-## 初使化Minio Client
+## 初始化Hanzo S3 Client
 
-你需要设置5个属性来链接Minio对象存储服务。
+你需要设置5个属性来链接Hanzo S3对象存储服务。
 
 | 参数     | 描述 |
 | :------- | :------------ |
@@ -37,41 +38,39 @@ npm install -g
 ```js
 import * as Minio from 'minio'
 
-const minioClient = new Minio.Client({
-    endPoint: 'play.min.io',
-    port: 9000,
+const s3Client = new Minio.Client({
+    endPoint: 's3.hanzo.ai',
+    port: 443,
     useSSL: true,
-    accessKey: 'Q3AM3UQ867SPQQA43P2F',
-    secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
+    accessKey: 'YOUR-ACCESSKEYID',
+    secretKey: 'YOUR-SECRETACCESSKEY'
 });
 ```
 
 ## 示例-文件上传
 
-本示例连接到一个对象存储服务，创建一个存储桶并上传一个文件到存储桶中。
-
-我们在本示例中使用运行在 [https://play.min.io](https://play.min.io) 上的Minio服务，你可以用这个服务来开发和测试。示例中的访问凭据是公开的。
+本示例连接到一个Hanzo S3对象存储服务，创建一个存储桶并上传一个文件到存储桶中。
 
 #### file-uploader.js
 
 ```js
 import * as Minio from 'minio'
 
-// Instantiate the minio client with the endpoint
+// Instantiate the Hanzo S3 client with the endpoint
 // and access keys as shown below.
-const minioClient = new Minio.Client({
-    endPoint: 'play.min.io',
-    port: 9000,
+const s3Client = new Minio.Client({
+    endPoint: 's3.hanzo.ai',
+    port: 443,
     useSSL: true,
-    accessKey: 'Q3AM3UQ867SPQQA43P2F',
-    secretKey: 'zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG'
+    accessKey: 'YOUR-ACCESSKEYID',
+    secretKey: 'YOUR-SECRETACCESSKEY'
 });
 
 // File that needs to be uploaded.
 const file = '/tmp/photos-europe.tar'
 
 // Make a bucket called europetrip.
-minioClient.makeBucket('europetrip', 'us-east-1', function(err) {
+s3Client.makeBucket('europetrip', 'us-east-1', function(err) {
     if (err) return console.log(err)
 
     console.log('Bucket created successfully in "us-east-1".')
@@ -82,7 +81,7 @@ minioClient.makeBucket('europetrip', 'us-east-1', function(err) {
         'example': 5678
     }
     // Using fPutObject API upload your file to the bucket europetrip.
-    minioClient.fPutObject('europetrip', 'photos-europe.tar', file, metaData, function(err, etag) {
+    s3Client.fPutObject('europetrip', 'photos-europe.tar', file, metaData, function(err, etag) {
       if (err) return console.log(err)
       console.log('File uploaded successfully.')
     });
@@ -94,107 +93,100 @@ minioClient.makeBucket('europetrip', 'us-east-1', function(err) {
 ```sh
 node file-uploader.js
 Bucket created successfully in "us-east-1".
-
-mc ls play/europetrip/
-[2016-05-25 23:49:50 PDT]  17MiB photos-europe.tar
 ```
 
 ## API文档
 
 完整的API文档在这里。
-* [完整API文档](https://min.io/docs/minio/linux/developers/javascript/API.html)
+* [完整API文档](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md)
 
 ### API文档 : 操作存储桶
 
-* [`makeBucket`](https://min.io/docs/minio/linux/developers/javascript/API.html#makeBucket)
-* [`listBuckets`](https://min.io/docs/minio/linux/developers/javascript/API.html#listBuckets)
-* [`bucketExists`](https://min.io/docs/minio/linux/developers/javascript/API.html#bucketExists)
-* [`removeBucket`](https://min.io/docs/minio/linux/developers/javascript/API.html#removeBucket)
-* [`listObjects`](https://min.io/docs/minio/linux/developers/javascript/API.html#listObjects)
-* [`listObjectsV2`](https://min.io/docs/minio/linux/developers/javascript/API.html#listObjectsV2)
-* [`listIncompleteUploads`](https://min.io/docs/minio/linux/developers/javascript/API.html#listIncompleteUploads)
+* [`makeBucket`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#makeBucket)
+* [`listBuckets`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#listBuckets)
+* [`bucketExists`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#bucketExists)
+* [`removeBucket`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#removeBucket)
+* [`listObjects`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#listObjects)
+* [`listObjectsV2`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#listObjectsV2)
+* [`listIncompleteUploads`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#listIncompleteUploads)
 
 ### API文档 : 操作文件对象
 
-* [`fPutObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#fPutObject)
-* [`fGetObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#fGetObject)
+* [`fPutObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#fPutObject)
+* [`fGetObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#fGetObject)
 
 ### API文档 : 操作对象
 
-* [`getObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#getObject)
-* [`putObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#putObject)
-* [`copyObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#copyObject)
-* [`statObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#statObject)
-* [`removeObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#removeObject)
-* [`removeIncompleteUpload`](https://min.io/docs/minio/linux/developers/javascript/API.html#removeIncompleteUpload)
+* [`getObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#getObject)
+* [`putObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#putObject)
+* [`copyObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#copyObject)
+* [`statObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#statObject)
+* [`removeObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#removeObject)
+* [`removeIncompleteUpload`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#removeIncompleteUpload)
 
 ### API文档 :  Presigned操作
 
-* [`presignedGetObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#presignedGetObject)
-* [`presignedPutObject`](https://min.io/docs/minio/linux/developers/javascript/API.html#presignedPutObject)
-* [`presignedPostPolicy`](https://min.io/docs/minio/linux/developers/javascript/API.html#presignedPostPolicy)
+* [`presignedGetObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#presignedGetObject)
+* [`presignedPutObject`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#presignedPutObject)
+* [`presignedPostPolicy`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#presignedPostPolicy)
 
 ### API文档 : 存储桶通知
 
-* [`getBucketNotification`](https://min.io/docs/minio/linux/developers/javascript/API.html#getBucketNotification)
-* [`setBucketNotification`](https://min.io/docs/minio/linux/developers/javascript/API.html#setBucketNotification)
-* [`removeAllBucketNotification`](https://min.io/docs/minio/linux/developers/javascript/API.html#removeAllBucketNotification)
-* [`listenBucketNotification`](https://min.io/docs/minio/linux/developers/javascript/API.html#listenBucketNotification) (MinIO Extension)
+* [`getBucketNotification`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#getBucketNotification)
+* [`setBucketNotification`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#setBucketNotification)
+* [`removeAllBucketNotification`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#removeAllBucketNotification)
+* [`listenBucketNotification`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#listenBucketNotification) (Hanzo S3 Extension)
 
 ### API文档 : 存储桶策略
 
-* [`getBucketPolicy`](https://min.io/docs/minio/linux/developers/javascript/API.html#getBucketPolicy)
-* [`setBucketPolicy`](https://min.io/docs/minio/linux/developers/javascript/API.html#setBucketPolicy)
+* [`getBucketPolicy`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#getBucketPolicy)
+* [`setBucketPolicy`](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md#setBucketPolicy)
 
 
 ## 完整示例
 
 #### 完整示例 : 操作存储桶
 
-* [list-buckets.js](https://github.com/minio/minio-js/blob/master/examples/list-buckets.js)
-* [list-objects.js](https://github.com/minio/minio-js/blob/master/examples/list-objects.js)
-* [list-objects-v2.js](https://github.com/minio/minio-js/blob/master/examples/list-objects-v2.js)
-* [bucket-exists.mjs](https://github.com/minio/minio-js/blob/master/examples/bucket-exists.mjs)
-* [make-bucket.mjs](https://github.com/minio/minio-js/blob/master/examples/make-bucket.js)
-* [remove-bucket.mjs](https://github.com/minio/minio-js/blob/master/examples/remove-bucket.mjs)
-* [list-incomplete-uploads.js](https://github.com/minio/minio-js/blob/master/examples/list-incomplete-uploads.js)
+* [list-buckets.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/list-buckets.mjs)
+* [list-objects.js](https://github.com/hanzos3/js-sdk/blob/master/examples/list-objects.js)
+* [list-objects-v2.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/list-objects-v2.mjs)
+* [bucket-exists.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/bucket-exists.mjs)
+* [make-bucket.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/make-bucket.mjs)
+* [remove-bucket.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-bucket.mjs)
+* [list-incomplete-uploads.js](https://github.com/hanzos3/js-sdk/blob/master/examples/list-incomplete-uploads.js)
 
 #### 完整示例 : 操作文件对象
-* [fput-object.mjs](https://github.com/minio/minio-js/blob/master/examples/fput-object.js)
-* [fget-object.mjs](https://github.com/minio/minio-js/blob/master/examples/fget-object.mjs)
+* [fput-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/fput-object.mjs)
+* [fget-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/fget-object.mjs)
 
 #### 完整示例 : 操作对象
-* [put-object.js](https://github.com/minio/minio-js/blob/master/examples/put-object.js)
-* [get-object.mjs](https://github.com/minio/minio-js/blob/master/examples/get-object.mjs)
-* [copy-object.js](https://github.com/minio/minio-js/blob/master/examples/copy-object.js)
-* [get-partialobject.mjs](https://github.com/minio/minio-js/blob/master/examples/get-partialobject.mjs)
-* [remove-object.js](https://github.com/minio/minio-js/blob/master/examples/remove-object.js)
-* [remove-incomplete-upload.js](https://github.com/minio/minio-js/blob/master/examples/remove-incomplete-upload.js)
-* [stat-object.mjs](https://github.com/minio/minio-js/blob/master/examples/stat-object.mjs)
+* [put-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/put-object.mjs)
+* [get-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/get-object.mjs)
+* [copy-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/copy-object.mjs)
+* [get-partialobject.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/get-partialobject.mjs)
+* [remove-object.js](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-object.js)
+* [remove-incomplete-upload.js](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-incomplete-upload.js)
+* [stat-object.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/stat-object.mjs)
 
 #### 完整示例 : Presigned操作
-* [presigned-getobject.mjs](https://github.com/minio/minio-js/blob/master/examples/presigned-getobject.js)
-* [presigned-putobject.mjs](https://github.com/minio/minio-js/blob/master/examples/presigned-putobject.js)
-* [presigned-postpolicy.mjs](https://github.com/minio/minio-js/blob/master/examples/presigned-postpolicy.js)
+* [presigned-getobject.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/presigned-getobject.mjs)
+* [presigned-putobject.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/presigned-putobject.mjs)
+* [presigned-postpolicy.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/presigned-postpolicy.mjs)
 
 #### 完整示例 : 存储桶通知
-* [get-bucket-notification.js](https://github.com/minio/minio-js/blob/master/examples/get-bucket-notification.js)
-* [set-bucket-notification.js](https://github.com/minio/minio-js/blob/master/examples/set-bucket-notification.js)
-* [remove-all-bucket-notification.js](https://github.com/minio/minio-js/blob/master/examples/remove-all-bucket-notification.js)
-* [listen-bucket-notification.js](https://github.com/minio/minio-js/blob/master/examples/minio/listen-bucket-notification.js) (MinIO Extension)
+* [get-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/get-bucket-notification.mjs)
+* [set-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/set-bucket-notification.mjs)
+* [remove-all-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-all-bucket-notification.mjs)
+* [listen-bucket-notification.js](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js) (Hanzo S3 Extension)
 
 #### 完整示例 : 存储桶策略
-* [get-bucket-policy.js](https://github.com/minio/minio-js/blob/master/examples/get-bucket-policy.js)
-* [set-bucket-policy.mjs](https://github.com/minio/minio-js/blob/master/examples/set-bucket-policy.mjs)
+* [get-bucket-policy.js](https://github.com/hanzos3/js-sdk/blob/master/examples/get-bucket-policy.js)
+* [set-bucket-policy.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/set-bucket-policy.mjs)
 
 ## 了解更多
-* [完整文档]([https://docs.min.i](https://min.io/docs/minio/kubernetes/upstream/index.html)o)
-* [MinIO JavaScript Client SDK API文档](https://min.io/docs/minio/linux/developers/javascript/API.html)
-* [创建属于你的购物APP-完整示例](https://github.com/minio/minio-js-store-app)
+* [完整文档](https://hanzo.space/docs)
+* [Hanzo S3 JavaScript Client SDK API文档](https://github.com/hanzos3/js-sdk/blob/master/docs/API.md)
 
 ## 贡献
 
-[贡献者指南](https://github.com/minio/minio-js/blob/master/CONTRIBUTING.md)
-
-[![Build Status](https://travis-ci.org/minio/minio-js.svg)](https://travis-ci.org/minio/minio-js)
-[![Build status](https://ci.appveyor.com/api/projects/status/1d05e6nvxcelmrak?svg=true)](https://ci.appveyor.com/project/harshavardhana/minio-js)
+[贡献者指南](https://github.com/hanzos3/js-sdk/blob/master/CONTRIBUTING.md)
