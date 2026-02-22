@@ -33,7 +33,7 @@ import * as uuid from 'uuid'
 import { AssumeRoleProvider } from '../../src/AssumeRoleProvider.ts'
 import { CopyDestinationOptions, CopySourceOptions, DEFAULT_REGION } from '../../src/helpers.ts'
 import { getVersionId } from '../../src/internal/helper.ts'
-import * as minio from '../../src/minio.ts'
+import * as s3 from '../../src/s3.ts'
 
 const assert = chai.assert
 
@@ -42,7 +42,7 @@ const isWindowsPlatform = process.platform === 'win32'
 describe('functional tests', function () {
   this.timeout(30 * 60 * 1000)
   var clientConfigParams = {}
-  var region_conf_env = process.env['MINIO_REGION']
+  var region_conf_env = process.env['S3_REGION']
 
   if (process.env['SERVER_ENDPOINT']) {
     var res = process.env['SERVER_ENDPOINT'].split(':')
@@ -89,10 +89,10 @@ describe('functional tests', function () {
   // a directory with files to read from, i.e. /mint/data.
   var dataDir = process.env['MINT_DATA_DIR']
 
-  var client = new minio.Client(clientConfigParams)
+  var client = new s3.Client(clientConfigParams)
   var usEastConfig = clientConfigParams
   usEastConfig.region = server_region
-  var clientUsEastRegion = new minio.Client(usEastConfig)
+  var clientUsEastRegion = new s3.Client(usEastConfig)
 
   var traceStream
   // FUNCTIONAL_TEST_TRACE env variable contains the path to which trace
@@ -737,7 +737,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:ExceptIncorrectEtag_`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setMatchETagExcept('TestEtag')
         client.copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds, (e) => {
           if (e) {
@@ -751,7 +751,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:ExceptCorrectEtag_`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setMatchETagExcept(etag)
         client
           .copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds)
@@ -765,7 +765,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:MatchCorrectEtag_`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setMatchETag(etag)
         client.copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds, (e) => {
           if (e) {
@@ -779,7 +779,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:MatchIncorrectEtag_`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setMatchETag('TestETag')
         client
           .copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds)
@@ -793,7 +793,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:Unmodified since ${modifiedDate}`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setUnmodified(new Date(modifiedDate))
         client.copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds, (e) => {
           if (e) {
@@ -807,7 +807,7 @@ describe('functional tests', function () {
     step(
       `copyObject(bucketName, objectName, srcObject, conditions, cb)_bucketName:${bucketName}, objectName:${_100kbObjectNameCopy}, srcObject:/${bucketName}/${_100kbObjectName}, conditions:Unmodified since 2010-03-26T12:00:00Z_`,
       (done) => {
-        var conds = new minio.CopyConditions()
+        var conds = new s3.CopyConditions()
         conds.setUnmodified(new Date('2010-03-26T12:00:00Z'))
         client
           .copyObject(bucketName, _100kbObjectNameCopy, '/' + bucketName + '/' + _100kbObjectName, conds)
@@ -854,7 +854,7 @@ describe('functional tests', function () {
       `listIncompleteUploads(bucketName, prefix, recursive)_bucketName:${bucketName}, prefix:${_65mbObjectName}, recursive: true_`,
       function (done) {
         // Hanzo S3's ListIncompleteUploads returns an empty list, so skip this on non-AWS.
-        // See: https://github.com/minio/minio/commit/75c43bfb6c4a2ace
+        // See: https://github.com/hanzoai/s3/commit/75c43bfb6c4a2ace
         let hostSkipList = ['s3.amazonaws.com']
         if (!hostSkipList.includes(client.host)) {
           this.skip()
@@ -881,7 +881,7 @@ describe('functional tests', function () {
       `listIncompleteUploads(bucketName, prefix, recursive)_bucketName:${bucketName}, recursive: true_`,
       function (done) {
         // Hanzo S3's ListIncompleteUploads returns an empty list, so skip this on non-AWS.
-        // See: https://github.com/minio/minio/commit/75c43bfb6c4a2ace
+        // See: https://github.com/hanzoai/s3/commit/75c43bfb6c4a2ace
         let hostSkipList = ['s3.amazonaws.com']
         if (!hostSkipList.includes(client.host)) {
           this.skip()
@@ -1009,7 +1009,7 @@ describe('functional tests', function () {
       (done) => {
         var bufPart = Buffer.alloc(_100kb.length)
         _5mb.copy(bufPart, 0, 0, _100kb.length)
-        var tmpFile = `${tmpDir}/${_5mbObjectName}.${etag}.part.hanzos3`
+        var tmpFile = `${tmpDir}/${_5mbObjectName}.${etag}.part.s3`
         // create a partial file
         fs.writeFileSync(tmpFile, bufPart)
         client
@@ -1904,7 +1904,7 @@ describe('functional tests', function () {
       )
 
       // This test is very similar to that above, except it does not include
-      // Minio.ObjectCreatedAll in the config. Thus, no events should be emitted.
+      // S3.ObjectCreatedAll in the config. Thus, no events should be emitted.
       step(
         `listenBucketNotification(bucketName, prefix, suffix, events)_bucketName:${bucketName}, events:s3:ObjectRemoved:*`,
         (done) => {
@@ -3427,8 +3427,8 @@ describe('functional tests', function () {
   describe('Bucket Replication API Tests', () => {
     // TODO - As of now, there is no api to get arn programmatically to setup replication through APIs and verify.
     // Please refer to Hanzo S3 server documentation and mc cli.
-    // https://min.io/docs/minio/linux/administration/bucket-replication.html
-    // https://min.io/docs/minio/linux/reference/minio-mc/mc-replicate-add.html
+    // https://hanzo.space/docs/administration/bucket-replication
+    // https://hanzo.space/docs/reference/mc-replicate-add
   })
 
   describe('Object Legal hold API Tests', () => {
@@ -3938,7 +3938,7 @@ describe('functional tests', function () {
 
         const aRoleConf = Object.assign({}, clientConfigParams, { credentialsProvider: assumeRoleProvider })
 
-        const assumeRoleClient = new minio.Client(aRoleConf)
+        const assumeRoleClient = new s3.Client(aRoleConf)
         assumeRoleClient.region = server_region
 
         describe('Put an Object', function () {

@@ -17,9 +17,9 @@
 // Note: YOUR-ACCESSKEYID, YOUR-SECRETACCESSKEY and my-bucketname are
 // dummy values, please replace them with original values.
 
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -56,10 +56,10 @@ await s3Client.setBucketEncryption('test-bucket', encryptionConfig)
  * KMS ID based SSE Encryption
  * Sample Configuration:
  *
- * export MINIO_KMS_KES_ENDPOINT=https://s3.hanzo.ai:7373;
- * export MINIO_KMS_KES_KEY_FILE=root.key;
- * export MINIO_KMS_KES_CERT_FILE=root.cert;
- * export MINIO_KMS_KES_KEY_NAME=my-hanzos3-key; //KMS Key ID
+ * export S3_KMS_KES_ENDPOINT=https://s3.hanzo.ai:7373;
+ * export S3_KMS_KES_KEY_FILE=root.key;
+ * export S3_KMS_KES_CERT_FILE=root.cert;
+ * export S3_KMS_KES_KEY_NAME=my-hanzos3-key; //KMS Key ID
  *
  * Start the server.
  *

@@ -5,9 +5,9 @@
 ## Hanzo S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const minioClient = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
@@ -19,9 +19,9 @@ const minioClient = new Minio.Client({
 ## AWS S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -58,11 +58,11 @@ const s3Client = new Minio.Client({
 
 <a name="HanzoS3Client_endpoint"></a>
 
-### new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey, region, transport, sessionToken, partSize})
+### new S3.Client ({endPoint, port, useSSL, accessKey, secretKey, region, transport, sessionToken, partSize})
 
 |                                                                                                                |
 | -------------------------------------------------------------------------------------------------------------- |
-| `new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey, region, transport, sessionToken, partSize})` |
+| `new S3.Client ({endPoint, port, useSSL, accessKey, secretKey, region, transport, sessionToken, partSize})` |
 | Initializes a new client object.                                                                               |
 
 **Parameters**
@@ -86,9 +86,9 @@ const s3Client = new Minio.Client({
 ## Create client for Hanzo S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const minioClient = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
@@ -100,9 +100,9 @@ const minioClient = new Minio.Client({
 ## Create client for AWS S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -112,9 +112,9 @@ const s3Client = new Minio.Client({
 ## Create client with temporary credentials
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-TEMP-ACCESSKEYID',
   secretKey: 'YOUR-TEMP-SECRETACCESSKEY',
@@ -125,11 +125,11 @@ const s3Client = new Minio.Client({
 ## Create client with custom HTTPS Agent
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 import * as fs from 'fs'
 import * as https from 'https'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.hanzo.ai',
   port: 9000,
   useSSL: true,
@@ -166,7 +166,7 @@ Creates a new bucket.
 **Example**
 
 ```js
-await minioClient.makeBucket('mybucket', 'us-east-1')
+await s3Client.makeBucket('mybucket', 'us-east-1')
 console.log('Bucket created successfully in "us-east-1".')
 ```
 
@@ -174,7 +174,7 @@ console.log('Bucket created successfully in "us-east-1".')
 Create a bucket with object locking enabled.
 
 ```js
-minioClient.makeBucket('mybucket', 'us-east-1', { ObjectLocking: true }, function (err) {
+s3Client.makeBucket('mybucket', 'us-east-1', { ObjectLocking: true }, function (err) {
   if (err) return console.log('Error creating bucket with object lock.', err)
   console.log('Bucket created successfully in "us-east-1" and enabled object lock')
 })
@@ -203,7 +203,7 @@ Please refer to: [list-buckets.mjs](..%2Fexamples%2Flist-buckets.mjs)
 
 ```js
 try {
-  const buckets = await minioClient.listBuckets()
+  const buckets = await s3Client.listBuckets()
   console.log('Success', buckets)
 } catch (err) {
   console.log(err.message)
@@ -225,7 +225,7 @@ Checks if a bucket exists.
 **Example**
 
 ```js
-const exists = await minioClient.bucketExists('mybucket')
+const exists = await s3Client.bucketExists('mybucket')
 if (exists) {
   return console.log('Bucket exists.')
 }
@@ -248,7 +248,7 @@ Removes a bucket.
 
 ```js
 try {
-  await minioClient.removeBucket('mybucket')
+  await s3Client.removeBucket('mybucket')
   console.log('Bucket removed successfully.')
 } catch (err) {
   console.log('unable to remove bucket.')
@@ -292,7 +292,7 @@ The object is of the format:
 
 ```js
 const data = []
-const stream = minioClient.listObjects('mybucket', '', true)
+const stream = s3Client.listObjects('mybucket', '', true)
 stream.on('data', function (obj) {
   data.push(obj)
 })
@@ -309,7 +309,7 @@ To get Object versions
 
 ```js
 const data = []
-const stream = minioClient.listObjects('mybucket', '', true, { IncludeVersion: true })
+const stream = s3Client.listObjects('mybucket', '', true, { IncludeVersion: true })
 stream.on('data', function (obj) {
   data.push(obj)
 })
@@ -355,7 +355,7 @@ The object is of the format:
 **Example**
 
 ```js
-const stream = minioClient.listObjectsV2('mybucket', '', true, '')
+const stream = s3Client.listObjectsV2('mybucket', '', true, '')
 stream.on('data', function (obj) {
   console.log(obj)
 })
@@ -399,7 +399,7 @@ The object is of the format:
 **Example**
 
 ```js
-const stream = minioClient.extensions.listObjectsV2WithMetadata('mybucket', '', true, '')
+const stream = s3Client.extensions.listObjectsV2WithMetadata('mybucket', '', true, '')
 stream.on('data', function (obj) {
   console.log(obj)
 })
@@ -437,7 +437,7 @@ Lists partially uploaded objects in a bucket.
 **Example**
 
 ```js
-const Stream = minioClient.listIncompleteUploads('mybucket', '', true)
+const Stream = s3Client.listIncompleteUploads('mybucket', '', true)
 Stream.on('data', function (obj) {
   console.log(obj)
 })
@@ -464,7 +464,7 @@ Get Versioning state of a Bucket
 **Example**
 
 ```js
-const versionInfo = await minioClient.getBucketVersioning('bucketname')
+const versionInfo = await s3Client.getBucketVersioning('bucketname')
 console.log('Success ', versionInfo)
 ```
 
@@ -485,7 +485,7 @@ Set Versioning state on a Bucket
 
 ```js
 const versioningConfig = { Status: 'Enabled' }
-await minioClient.setBucketVersioning('bucketname', versioningConfig)
+await s3Client.setBucketVersioning('bucketname', versioningConfig)
 ```
 
 <a name="setBucketReplication"></a>
@@ -554,7 +554,7 @@ Get replication config of a Bucket
 **Example**
 
 ```js
-const replicatinConfig = await minioClient.getBucketReplication('source-bucket')
+const replicatinConfig = await s3Client.getBucketReplication('source-bucket')
 console.log(replicatinConfig)
 ```
 
@@ -573,7 +573,7 @@ Remove replication config of a Bucket
 **Example**
 
 ```js
-await minioClient.removeBucketReplication('source-bucket')
+await s3Client.removeBucketReplication('source-bucket')
 ```
 
 <a name="setBucketTagging"></a>
@@ -592,7 +592,7 @@ Set Tags on a Bucket
 **Example**
 
 ```js
-await minioClient.setBucketTagging('bucketname', tags)
+await s3Client.setBucketTagging('bucketname', tags)
 ```
 
 <a name="removeBucketTagging"></a>
@@ -610,7 +610,7 @@ Remove Tags on a Bucket
 **Example**
 
 ```js
-await minioClient.removeBucketTagging('bucketname')
+await s3Client.removeBucketTagging('bucketname')
 ```
 
 <a name="getBucketTagging"></a>
@@ -628,7 +628,7 @@ Gets Tags on a Bucket
 **Example**
 
 ```js
-const tagList = await minioClient.getBucketTagging('bucketname')
+const tagList = await s3Client.getBucketTagging('bucketname')
 console.log(tagList)
 ```
 
@@ -663,7 +663,7 @@ const lifecycleConfig = {
   ],
 }
 
-await minioClient.setBucketLifecycle('bucketname', lifecycleConfig)
+await s3Client.setBucketLifecycle('bucketname', lifecycleConfig)
 ```
 
 <a name="getBucketLifecycle"></a>
@@ -681,7 +681,7 @@ Get Lifecycle Configuration of a Bucket
 **Example**
 
 ```js
-await minioClient.getBucketLifecycle('bucketname')
+await s3Client.getBucketLifecycle('bucketname')
 ```
 
 <a name="removeBucketLifecycle"></a>
@@ -699,7 +699,7 @@ Remove Lifecycle Configuration of a Bucket
 **Example**
 
 ```js
-await minioClient.removeBucketLifecycle('bucketname')
+await s3Client.removeBucketLifecycle('bucketname')
 ```
 
 <a name="setObjectLockConfig"></a>
@@ -718,7 +718,7 @@ Set Object lock config on a Bucket
 **Example 1**
 
 ```js
-await minioClient.setObjectLockConfig('my-bucketname', { mode: 'COMPLIANCE', unit: 'Days', validity: 10 })
+await s3Client.setObjectLockConfig('my-bucketname', { mode: 'COMPLIANCE', unit: 'Days', validity: 10 })
 ```
 
 **Example 2**
@@ -744,7 +744,7 @@ Get Lock config on a Bucket
 Get object lock configuration on a Bucket
 
 ```js
-await minioClient.getObjectLockConfig('my-bucketname')
+await s3Client.getObjectLockConfig('my-bucketname')
 ```
 
 <a name="setBucketEncryption"></a>
@@ -840,7 +840,7 @@ Downloads an object as a stream.
 
 ```js
 let size = 0
-const dataStream = await minioClient.getObject('mybucket', 'photo.jpg')
+const dataStream = await s3Client.getObject('mybucket', 'photo.jpg')
 dataStream.on('data', function (chunk) {
   size += chunk.length
 })
@@ -858,7 +858,7 @@ Get a specific object version.
 
 ```js
 let size = 0
-const dataStream = await minioClient.getObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
+const dataStream = await s3Client.getObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
 dataStream.on('data', function (chunk) {
   size += chunk.length
 })
@@ -876,7 +876,7 @@ Get a Server Side Encrypted object.
 
 ```js
 let size = 0
-const dataStream = await minioClient.getObject('mybucket', 'photo.jpg', {
+const dataStream = await s3Client.getObject('mybucket', 'photo.jpg', {
   SSECustomerAlgorithm: 'AES256',
   SSECustomerKey: 'YOUR_KEY',
   SSECustomerKeyMD5: 'YOUR_MD5',
@@ -920,7 +920,7 @@ Downloads the specified range bytes of an object as a stream.
 ```js
 let size = 0
 // reads 30 bytes from the offset 10.
-const dataStream = await minioClient.getPartialObject('mybucket', 'photo.jpg', 10, 30)
+const dataStream = await s3Client.getPartialObject('mybucket', 'photo.jpg', 10, 30)
 dataStream.on('data', function (chunk) {
   size += chunk.length
 })
@@ -938,7 +938,7 @@ To get a specific version of an object
 ```js
 const versionedObjSize = 0
 // reads 30 bytes from the offset 10.
-const dataStream = await minioClient.getPartialObject('mybucket', 'photo.jpg', 10, 30, { versionId: 'my-versionId' })
+const dataStream = await s3Client.getPartialObject('mybucket', 'photo.jpg', 10, 30, { versionId: 'my-versionId' })
 dataStream.on('data', function (chunk) {
   versionedObjSize += chunk.length
 })
@@ -956,7 +956,7 @@ To get a Server Side Encrypted object.
 ```js
 const versionedObjSize = 0
 // reads 30 bytes from the offset 10.
-const dataStream = await minioClient.getPartialObject('mybucket', 'photo.jpg', 10, 30, {
+const dataStream = await s3Client.getPartialObject('mybucket', 'photo.jpg', 10, 30, {
   SSECustomerAlgorithm: 'AES256',
   SSECustomerKey: 'YOUR_KEY',
   SSECustomerKeyMD5: 'YOUR_MD5',
@@ -998,7 +998,7 @@ Downloads and saves the object as a file in the local filesystem.
 **Example**
 
 ```js
-minioClient.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function (err) {
+s3Client.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function (err) {
   if (err) {
     return console.log(err)
   }
@@ -1010,7 +1010,7 @@ minioClient.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function (err)
 To Stream a specific object version into a file.
 
 ```js
-minioClient.fGetObject(bucketName, objNameValue, './download/MyImage.jpg', { versionId: 'my-versionId' }, function (e) {
+s3Client.fGetObject(bucketName, objNameValue, './download/MyImage.jpg', { versionId: 'my-versionId' }, function (e) {
   if (e) {
     return console.log(e)
   }
@@ -1022,7 +1022,7 @@ minioClient.fGetObject(bucketName, objNameValue, './download/MyImage.jpg', { ver
 To Stream a Server Side Encrypted object into a file.
 
 ```js
-minioClient.fGetObject(
+s3Client.fGetObject(
   bucketName,
   objNameValue,
   './download/MyImage.jpg',
@@ -1079,7 +1079,7 @@ const fileStat = Fs.stat(file, function (err, stats) {
   if (err) {
     return console.log(err)
   }
-  minioClient.putObject('mybucket', '40mbfile', fileStream, stats.size, function (err, objInfo) {
+  s3Client.putObject('mybucket', '40mbfile', fileStream, stats.size, function (err, objInfo) {
     if (err) {
       return console.log(err) // err should be null
     }
@@ -1104,7 +1104,7 @@ const fileStat = Fs.stat(file, function (err, stats) {
 
 ```js
 const buffer = 'Hello World'
-minioClient.putObject('mybucket', 'hello-file', buffer, function (err, etag) {
+s3Client.putObject('mybucket', 'hello-file', buffer, function (err, etag) {
   return console.log(err, etag) // err should be null
 })
 ```
@@ -1145,7 +1145,7 @@ const metaData = {
   'X-Amz-Meta-Testing': 1234,
   example: 5678,
 }
-minioClient.fPutObject('mybucket', '40mbfile', file, metaData, function (err, objInfo) {
+s3Client.fPutObject('mybucket', '40mbfile', file, metaData, function (err, objInfo) {
   if (err) {
     return console.log(err)
   }
@@ -1171,9 +1171,9 @@ Copy a source object into a new object in the specified bucket.
 **Example**
 
 ```js
-const conds = new Minio.CopyConditions()
+const conds = new S3.CopyConditions()
 conds.setMatchETag('bd891862ea3e22c93ed53a098218791d')
-await minioClient.copyObject('mybucket', 'newobject', '/mybucket/srcobject', conds)
+await s3Client.copyObject('mybucket', 'newobject', '/mybucket/srcobject', conds)
 ```
 
 <a name="statObject"></a>
@@ -1204,14 +1204,14 @@ Gets metadata of an object.
 **Example**
 
 ```js
-const stat = await minioClient.statObject('mybucket', 'photo.jpg')
+const stat = await s3Client.statObject('mybucket', 'photo.jpg')
 console.log(stat)
 ```
 
 **Example stat on a version of an object**
 
 ```js
-const stat = await minioClient.statObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
+const stat = await s3Client.statObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
 console.log(stat)
 ```
 
@@ -1233,7 +1233,7 @@ Removes an object.
 
 ```js
 ;(async function () {
-  await minioClient.removeObject('mybucket', 'photo.jpg')
+  await s3Client.removeObject('mybucket', 'photo.jpg')
   console.log('Removed the object')
 })()
 ```
@@ -1244,7 +1244,7 @@ Delete a specific version of an object
 ```js
 ;(async function () {
   try {
-    await minioClient.removeObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
+    await s3Client.removeObject('mybucket', 'photo.jpg', { versionId: 'my-versionId' })
     console.log('Removed the object')
   } catch (err) {
     console.log('Unable to remove object', err)
@@ -1334,7 +1334,7 @@ Removes a partially uploaded object.
 **Example**
 
 ```js
-await minioClient.removeIncompleteUpload('mybucket', 'photo.jpg')
+await s3Client.removeIncompleteUpload('mybucket', 'photo.jpg')
 ```
 
 <a name="putObjectRetention"></a>
@@ -1363,7 +1363,7 @@ expirationDate.setDate(expirationDate.getDate() + 1)
 expirationDate.setUTCHours(0, 0, 0, 0) //Should be start of the day.(midnight)
 const versionId = 'e67b4b08-144d-4fc4-ba15-43c3f7f9ba74'
 
-await minioClient.putObjectRetention(bucketName, objectName, {
+await s3Client.putObjectRetention(bucketName, objectName, {
   Mode: 'GOVERNANCE',
   retainUntilDate: retainUntilDate.toISOString(),
   versionId: versionId,
@@ -1387,14 +1387,14 @@ Get retention config of an object
 **Example 1**
 
 ```js
-const retentionInfo = await minioClient.getObjectRetention('bucketname', 'objectname')
+const retentionInfo = await s3Client.getObjectRetention('bucketname', 'objectname')
 console.log(retentionInfo)
 ```
 
 **Example 2**
 
 ```js
-const retInfoForVersionId = await minioClient.getObjectRetention('bucketname', 'objectname', {
+const retInfoForVersionId = await s3Client.getObjectRetention('bucketname', 'objectname', {
   versionId: 'my-versionId',
 })
 console.log(retInfoForVersionId)
@@ -1418,14 +1418,14 @@ Put Tags on an Object
 **Example**
 
 ```js
-await minioClient.setObjectTagging('bucketname', 'object-name', tags)
+await s3Client.setObjectTagging('bucketname', 'object-name', tags)
 ```
 
 **Example 1**
 Put tags on a version of an object.
 
 ```js
-await minioClient.setObjectTagging('bucketname', 'object-name', tags, { versionId: 'my-version-id' })
+await s3Client.setObjectTagging('bucketname', 'object-name', tags, { versionId: 'my-version-id' })
 ```
 
 <a name="removeObjectTagging"></a>
@@ -1445,14 +1445,14 @@ Remove Tags on an Object
 **Example**
 
 ```js
-await minioClient.removeObjectTagging('bucketname', 'object-name')
+await s3Client.removeObjectTagging('bucketname', 'object-name')
 ```
 
 **Example1**
 Remove tags on a version of an object.
 
 ```js
-await minioClient.removeObjectTagging('bucketname', 'object-name', { versionId: 'my-object-version-id' })
+await s3Client.removeObjectTagging('bucketname', 'object-name', { versionId: 'my-object-version-id' })
 ```
 
 <a name="getObjectTagging"></a>
@@ -1472,14 +1472,14 @@ Get Tags of an Object
 **Example**
 
 ```js
-console.log(await minioClient.getObjectTagging('bucketname', 'object-name'))
+console.log(await s3Client.getObjectTagging('bucketname', 'object-name'))
 ```
 
 **Example1**
 Get tags on a version of an object.
 
 ```js
-console.log(await minioClient.getObjectTagging('bucketname', 'object-name', { versionId: 'my-object-version-id' }))
+console.log(await s3Client.getObjectTagging('bucketname', 'object-name', { versionId: 'my-object-version-id' }))
 ```
 
 <a name="getObjectLegalHold"></a>
@@ -1501,7 +1501,7 @@ Get legal hold on an object.
 Get Legal hold of an object.
 
 ```js
-const legalholdStatus = await minioClient.getObjectLegalHold('bucketName', 'objectName')
+const legalholdStatus = await s3Client.getObjectLegalHold('bucketName', 'objectName')
 ```
 
 **Example 2**
@@ -1509,7 +1509,7 @@ const legalholdStatus = await minioClient.getObjectLegalHold('bucketName', 'obje
 Get Legal hold of an object with versionId.
 
 ```js
-const legalholdStatus = await minioClient.getObjectLegalHold('bucketName', 'objectName', {
+const legalholdStatus = await s3Client.getObjectLegalHold('bucketName', 'objectName', {
   versionId: 'my-obj-version-uuid',
 })
 ```
@@ -1533,7 +1533,7 @@ Set legal hold on an object.
 Set Legal hold of an object.
 
 ```js
-const legalholdStatus = await minioClient.setObjectLegalHold('bucketName', 'objectName', { Status: 'ON' })
+const legalholdStatus = await s3Client.setObjectLegalHold('bucketName', 'objectName', { Status: 'ON' })
 ```
 
 **Example 2**
@@ -1541,7 +1541,7 @@ const legalholdStatus = await minioClient.setObjectLegalHold('bucketName', 'obje
 Set Legal hold of an object with versionId.
 
 ```js
-const legalholdStatus = await minioClient.setObjectLegalHold('bucketName', 'objectName', {
+const legalholdStatus = await s3Client.setObjectLegalHold('bucketName', 'objectName', {
   Status: 'ON',
   versionId: 'my-obj-version-uuid',
 })
@@ -1565,34 +1565,34 @@ Compose an object from parts
 Compose an Object from its parts .
 
 ```js
-import * as minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
 const sourceList = [
-  new minio.CopySourceOptions({
+  new S3.CopySourceOptions({
     Bucket: 'source-bucket',
     Object: 'parta',
   }),
-  new minio.CopySourceOptions({
+  new S3.CopySourceOptions({
     Bucket: 'source-bucket',
     Object: 'partb',
   }),
-  new minio.CopySourceOptions({
+  new S3.CopySourceOptions({
     Bucket: 'source-bucket',
     Object: 'partc',
   }),
-  new minio.CopySourceOptions({
+  new S3.CopySourceOptions({
     Bucket: 'source-bucket',
     Object: 'partd',
   }),
 ]
 
-const destOption = new minio.CopyDestinationOptions({
+const destOption = new S3.CopyDestinationOptions({
   Bucket: 'dest-bucket',
   Object: '100MB.zip',
 })
 
 //using Promise style.
-await minioClient.composeObject(destOption, sourceList)
+await s3Client.composeObject(destOption, sourceList)
 ```
 
 <a name="selectObjectContent"></a>
@@ -1624,7 +1624,7 @@ const selectOpts = {
   requestProgress: { Enabled: true },
 }
 
-const res = await minioClient.selectObjectContent('bucketName', 'objectName', selectOpts)
+const res = await s3Client.selectObjectContent('bucketName', 'objectName', selectOpts)
 console.log(res)
 ```
 
@@ -1653,7 +1653,7 @@ Generates a presigned URL for the provided HTTP method, 'httpMethod'. Browsers/M
 ```js
 // presigned url for 'getObject' method.
 // expires in a day.
-const presignedUrl = await minioClient.presignedUrl('GET', 'mybucket', 'hello.txt', 24 * 60 * 60)
+const presignedUrl = await s3Client.presignedUrl('GET', 'mybucket', 'hello.txt', 24 * 60 * 60)
 console.log(presignedUrl)
 ```
 
@@ -1663,14 +1663,14 @@ console.log(presignedUrl)
 // presigned url for 'listObject' method.
 // Lists objects in 'myBucket' with prefix 'data'.
 // Lists max 1000 of them.
-await minioClient.presignedUrl('GET', 'mybucket', '', 1000, { prefix: 'data', 'max-keys': 1000 })
+await s3Client.presignedUrl('GET', 'mybucket', '', 1000, { prefix: 'data', 'max-keys': 1000 })
 ```
 
 **Example 3**
 
 ```js
 // Get Object with versionid
-await minioClient.presignedUrl('GET', 'mybucket', '', 1000, { versionId: '10fa9946-3f64-4137-a58f-888065c0732e' })
+await s3Client.presignedUrl('GET', 'mybucket', '', 1000, { versionId: '10fa9946-3f64-4137-a58f-888065c0732e' })
 ```
 
 <a name="presignedGetObject"></a>
@@ -1693,7 +1693,7 @@ Generates a presigned URL for HTTP GET operations. Browsers/Mobile clients may p
 
 ```js
 // expires in a day.
-const presignedUrl = await minioClient.presignedGetObject('mybucket', 'hello.txt', 24 * 60 * 60)
+const presignedUrl = await s3Client.presignedGetObject('mybucket', 'hello.txt', 24 * 60 * 60)
 console.log(presignedUrl)
 ```
 
@@ -1715,7 +1715,7 @@ Generates a presigned URL for HTTP PUT operations. Browsers/Mobile clients may p
 
 ```js
 // expires in a day.
-const presignedUrl = await minioClient.presignedPutObject('mybucket', 'hello.txt', 24 * 60 * 60)
+const presignedUrl = await s3Client.presignedPutObject('mybucket', 'hello.txt', 24 * 60 * 60)
 console.log(presignedUrl)
 ```
 
@@ -1729,12 +1729,12 @@ Allows setting policy conditions to a presigned URL for POST operations. Policie
 
 | Param    | Type     | Description                                          |
 | -------- | -------- | ---------------------------------------------------- |
-| `policy` | _object_ | Policy object created by minioClient.newPostPolicy() |
+| `policy` | _object_ | Policy object created by s3Client.newPostPolicy() |
 
 Create policy:
 
 ```js
-const policy = minioClient.newPostPolicy()
+const policy = s3Client.newPostPolicy()
 ```
 
 Apply upload policy restrictions:
@@ -1776,7 +1776,7 @@ policy.setUserMetaData({
 POST your content from the browser using `superagent`:
 
 ```js
-const { postURL, formData } = await minioClient.presignedPostPolicy(policy)
+const { postURL, formData } = await s3Client.presignedPostPolicy(policy)
 const req = superagent.post(postURL)
 _.each(formData, function (value, key) {
   req.field(key, value)
@@ -1813,7 +1813,7 @@ Fetch the notification configuration stored in the S3 provider and that belongs 
 **Example**
 
 ```js
-minioClient.getBucketNotification('mybucket', function (err, bucketNotificationConfig) {
+s3Client.getBucketNotification('mybucket', function (err, bucketNotificationConfig) {
   if (err) return console.log(err)
   console.log(bucketNotificationConfig)
 })
@@ -1837,20 +1837,20 @@ Upload a user-created notification configuration and associate it to the specifi
 
 ```js
 // Create a new notification object
-const bucketNotification = new Minio.NotificationConfig()
+const bucketNotification = new S3.NotificationConfig()
 
 // Setup a new Queue configuration
-const arn = Minio.buildARN('aws', 'sqs', 'us-west-2', '1', 'webhook')
-const queue = new Minio.QueueConfig(arn)
+const arn = S3.buildARN('aws', 'sqs', 'us-west-2', '1', 'webhook')
+const queue = new S3.QueueConfig(arn)
 queue.addFilterSuffix('.jpg')
 queue.addFilterPrefix('myphotos/')
-queue.addEvent(Minio.ObjectReducedRedundancyLostObject)
-queue.addEvent(Minio.ObjectCreatedAll)
+queue.addEvent(S3.ObjectReducedRedundancyLostObject)
+queue.addEvent(S3.ObjectCreatedAll)
 
 // Add the queue to the overall notification object
 bucketNotification.add(queue)
 
-minioClient.setBucketNotification('mybucket', bucketNotification, function (err) {
+s3Client.setBucketNotification('mybucket', bucketNotification, function (err) {
   if (err) return console.log(err)
   console.log('Success')
 })
@@ -1870,7 +1870,7 @@ Remove the bucket notification configuration associated to the specified bucket.
 | `callback(err)` | _function_ | Callback function is called with non `null` err value in case of error. If no callback is passed, a `Promise` is returned. |
 
 ```js
-minioClient.removeAllBucketNotification('my-bucketname', function (e) {
+s3Client.removeAllBucketNotification('my-bucketname', function (e) {
   if (e) {
     return console.log(e)
   }
@@ -1900,10 +1900,10 @@ To stop listening, call `.stop()` on the returned `EventEmitter`.
 | `suffix`     | _string_ | Object key suffix to filter notifications for.  |
 | `events`     | _Array_  | Enables notifications for specific event types. |
 
-See [here](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js) for a full example.
+See [here](https://github.com/hanzos3/js-sdk/blob/master/examples/s3/listen-bucket-notification.js) for a full example.
 
 ```js
-const listener = minioClient.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
+const listener = s3Client.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
 listener.on('notification', function (record) {
   // For example: 's3:ObjectCreated:Put event occurred (2016-08-23T18:26:07.214Z)'
   console.log('%s event occurred (%s)', record.eventName, record.eventTime)
@@ -1927,7 +1927,7 @@ as well.
 
 ```js
 // Retrieve bucket policy of 'my-bucketname'
-const policy = await minioClient.getBucketPolicy('my-bucketname')
+const policy = await s3Client.getBucketPolicy('my-bucketname')
 
 console.log(`Bucket policy file: ${policy}`)
 ```
@@ -1947,7 +1947,7 @@ Set the bucket policy on the specified bucket. [bucketPolicy](https://docs.aws.a
 
 ```js
 // Set the bucket policy of `my-bucketname`
-await minioClient.setBucketPolicy('my-bucketname', JSON.stringify(policy))
+await s3Client.setBucketPolicy('my-bucketname', JSON.stringify(policy))
 ```
 
 ## 6. Custom Settings
@@ -1973,7 +1973,7 @@ Set the HTTP/HTTPS request options. Supported options are `agent` ([http.Agent()
 
 ```js
 // Do not reject self signed certificates.
-minioClient.setRequestOptions({ rejectUnauthorized: false })
+s3Client.setRequestOptions({ rejectUnauthorized: false })
 ```
 
 ## 7. Explore Further

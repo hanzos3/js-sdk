@@ -17,9 +17,9 @@
 // Note: YOUR-ACCESSKEYID, YOUR-SECRETACCESSKEY and my-bucketname are
 // dummy values, please replace them with original values.
 
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 'localhost',
   port: 9000,
   useSSL: false,
@@ -27,13 +27,13 @@ const s3Client = new Minio.Client({
   secretKey: 'YOUR-SECRETACCESSKEY',
 })
 
-const config = new Minio.NotificationConfig()
-const arn = Minio.buildARN('hanzos3', 'sqs', '', '1', 'webhook')
-const queue = new Minio.QueueConfig(arn)
+const config = new S3.NotificationConfig()
+const arn = S3.buildARN('hanzos3', 'sqs', '', '1', 'webhook')
+const queue = new S3.QueueConfig(arn)
 
 queue.addFilterSuffix('.jpg')
 queue.addFilterPrefix('myphotos/')
-queue.addEvent(Minio.ObjectCreatedAll)
+queue.addEvent(S3.ObjectCreatedAll)
 
 config.add(queue)
 

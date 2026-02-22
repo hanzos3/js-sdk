@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-// Note that `listenBucketNotification` is only available for Hanzo S3 (and MinIO),
+// Note that `listenBucketNotification` is only available for Hanzo S3,
 // and not Amazon.
 
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: '...',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -35,7 +35,7 @@ const poller = s3Client.listenBucketNotification('bucket1', 'photos/', '.jpg', [
 //   awsRegion: 'us-east-1',
 //   eventTime: '2016-08-23T18:26:07.214Z',
 //   eventName: 's3:ObjectCreated:Put',
-//   userIdentity: { principalId: 'minio' },
+//   userIdentity: { principalId: 's3admin' },
 //   requestParameters: { sourceIPAddress: '...' },
 //   responseElements: {},
 //   s3:

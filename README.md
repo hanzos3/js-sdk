@@ -1,7 +1,7 @@
 # Hanzo S3 JavaScript SDK
 
 [![CI](https://img.shields.io/github/actions/workflow/status/hanzos3/js-sdk/test.yml?branch=master)](https://github.com/hanzos3/js-sdk/actions)
-[![NPM](https://nodei.co/npm/minio.png)](https://nodei.co/npm/minio/)
+[![NPM](https://nodei.co/npm/@hanzo/s3.png)](https://nodei.co/npm/@hanzo/s3/)
 
 The Hanzo S3 JavaScript Client SDK provides high-level APIs to access any Amazon S3 compatible object storage server, including [Hanzo S3](https://github.com/hanzoai/s3).
 
@@ -13,7 +13,7 @@ This document presumes you have a working [Node.js](http://nodejs.org/) developm
 ## Download from NPM
 
 ```sh
-npm install --save minio
+npm install --save @hanzo/s3
 ```
 
 ## Download from Source
@@ -28,7 +28,7 @@ npm install -g
 
 ## Using with TypeScript
 
-`minio>7.1.0` is shipped with builtin type definition, `@types/minio` is no longer needed.
+`@hanzo/s3` is shipped with builtin type definitions.
 
 ## Initialize Hanzo S3 Client
 
@@ -43,9 +43,9 @@ The following parameters are needed to connect to a Hanzo S3 object storage serv
 | `useSSL`    | Optional, set to 'true' to enable secure (HTTPS) access.                     |
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.hanzo.ai',
   port: 443,
   useSSL: true,
@@ -61,11 +61,11 @@ This example connects to a Hanzo S3 object storage server, creates a bucket, and
 #### file-uploader.mjs
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
 // Instantiate the Hanzo S3 client with the object store service
 // endpoint and an authorized user's credentials
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.hanzo.ai',
   port: 443,
   useSSL: true,
@@ -237,7 +237,7 @@ The complete API Reference is available here:
 - [get-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/get-bucket-notification.mjs)
 - [set-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/set-bucket-notification.mjs)
 - [remove-all-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-all-bucket-notification.mjs)
-- [listen-bucket-notification.js](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js) (Hanzo S3 Extension)
+- [listen-bucket-notification.js](https://github.com/hanzos3/js-sdk/blob/master/examples/s3/listen-bucket-notification.js) (Hanzo S3 Extension)
 
 #### Bucket Policy Operations
 

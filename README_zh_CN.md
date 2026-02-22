@@ -1,7 +1,7 @@
 # Hanzo S3 JavaScript SDK - Amazon S3兼容云存储
 
 [![CI](https://img.shields.io/github/actions/workflow/status/hanzos3/js-sdk/test.yml?branch=master)](https://github.com/hanzos3/js-sdk/actions)
-[![NPM](https://nodei.co/npm/minio.png)](https://nodei.co/npm/minio/)
+[![NPM](https://nodei.co/npm/@hanzo/s3.png)](https://nodei.co/npm/@hanzo/s3/)
 
 Hanzo S3 JavaScript Client SDK提供简单的API来访问任何Amazon S3兼容的对象存储服务，包括 [Hanzo S3](https://github.com/hanzoai/s3)。
 
@@ -11,7 +11,7 @@ Hanzo S3 JavaScript Client SDK提供简单的API来访问任何Amazon S3兼容�
 
 ## 使用NPM下载
 
-`minio>7.1.0` 拥有自带的类型定义，不再需要安装 `@types/minio`。
+`@hanzo/s3` 拥有自带的类型定义。
 
 ## 下载并安装源码
 
@@ -36,9 +36,9 @@ npm install -g
 
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint: 's3.hanzo.ai',
     port: 443,
     useSSL: true,
@@ -54,11 +54,11 @@ const s3Client = new Minio.Client({
 #### file-uploader.js
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
 // Instantiate the Hanzo S3 client with the endpoint
 // and access keys as shown below.
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint: 's3.hanzo.ai',
     port: 443,
     useSSL: true,
@@ -177,7 +177,7 @@ Bucket created successfully in "us-east-1".
 * [get-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/get-bucket-notification.mjs)
 * [set-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/set-bucket-notification.mjs)
 * [remove-all-bucket-notification.mjs](https://github.com/hanzos3/js-sdk/blob/master/examples/remove-all-bucket-notification.mjs)
-* [listen-bucket-notification.js](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js) (Hanzo S3 Extension)
+* [listen-bucket-notification.js](https://github.com/hanzos3/js-sdk/blob/master/examples/s3/listen-bucket-notification.js) (Hanzo S3 Extension)
 
 #### 完整示例 : 存储桶策略
 * [get-bucket-policy.js](https://github.com/hanzos3/js-sdk/blob/master/examples/get-bucket-policy.js)

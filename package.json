@@ -1,9 +1,9 @@
 {
-  "name": "minio",
+  "name": "@hanzo/s3",
   "version": "8.0.7",
   "description": "Hanzo S3 - S3 Compatible Cloud Storage client",
-  "main": "./dist/main/minio.js",
-  "module": "./dist/esm/minio.mjs",
+  "main": "./dist/main/s3.js",
+  "module": "./dist/esm/s3.mjs",
   "scripts": {
     "prepare": "husky install",
     "tsc": "tsc",
@@ -20,9 +20,9 @@
   },
   "exports": {
     ".": {
-      "require": "./dist/main/minio.js",
-      "types": "./dist/main/minio.d.ts",
-      "default": "./dist/esm/minio.mjs"
+      "require": "./dist/main/s3.js",
+      "types": "./dist/main/s3.d.ts",
+      "default": "./dist/esm/s3.mjs"
     },
     "./dist/main/internal/*": null,
     "./dist/main/*": {

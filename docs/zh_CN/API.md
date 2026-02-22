@@ -5,9 +5,9 @@
 ## Hanzo S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const minioClient = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint: 's3.hanzo.ai',
     port: 9000,
   	useSSL: true,
@@ -19,9 +19,9 @@ const minioClient = new Minio.Client({
 ## AWS S3
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint:  's3.amazonaws.com',
     accessKey: 'YOUR-ACCESSKEYID',
     secretKey: 'YOUR-SECRETACCESSKEY'
@@ -45,11 +45,11 @@ const s3Client = new Minio.Client({
 ## 1.  构造函数
 
 <a name="HanzoS3Client_endpoint"></a>
-###  new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey})
+###  new S3.Client ({endPoint, port, useSSL, accessKey, secretKey})
 
 |     |
 | ---- |
-|``new Minio.Client ({endPoint, port, useSSL, accessKey, secretKey})``|
+|``new S3.Client ({endPoint, port, useSSL, accessKey, secretKey})``|
 |初使化一个新的client对象。|
 
 __参数__
@@ -69,12 +69,12 @@ __参数__
 
 __示例__
 
-## 创建连接Minio Server的客户端
+## 创建连接Hanzo S3的客户端
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const minioClient = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint: 's3.hanzo.ai',
     port: 9000,
     useSSL: true,
@@ -87,9 +87,9 @@ const minioClient = new Minio.Client({
 
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint:  's3.amazonaws.com',
     accessKey: 'YOUR-ACCESSKEYID',
     secretKey: 'YOUR-SECRETACCESSKEY'
@@ -99,9 +99,9 @@ const s3Client = new Minio.Client({
 ## Ali OSS
 
 ```js
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
     endPoint:  'oss-cn-hangzhou.aliyuncs.com',
     accessKey: 'YOUR-ACCESSKEYID',
     secretKey: 'YOUR-SECRETACCESSKEY',
@@ -129,7 +129,7 @@ __参数__
 __示例__
 
 ```js
-await minioClient.makeBucket('mybucket', 'us-east-1')
+await s3Client.makeBucket('mybucket', 'us-east-1')
 ```
 
 <a name="listBuckets"></a>
@@ -158,7 +158,7 @@ __示例__
 
 
 ```js
-minioClient.listBuckets(function(err, buckets) {
+s3Client.listBuckets(function(err, buckets) {
   if (err) return console.log(err)
   console.log('buckets :', buckets)
 })
@@ -181,7 +181,7 @@ __示例__
 
 
 ```js
-await minioClient.bucketExists('mybucket')
+await s3Client.bucketExists('mybucket')
 ```
 
 <a name="removeBucket"></a>
@@ -201,7 +201,7 @@ __示例__
 
 
 ```js
-minioClient.removeBucket('mybucket', function(err) {
+s3Client.removeBucket('mybucket', function(err) {
   if (err) return console.log('unable to remove bucket.')
   console.log('Bucket removed successfully.')
 })
@@ -243,7 +243,7 @@ __示例__
 
 
 ```js
-const stream = minioClient.listObjects('mybucket','', true)
+const stream = s3Client.listObjects('mybucket','', true)
 stream.on('data', function(obj) { console.log(obj) } )
 stream.on('error', function(err) { console.log(err) } )
 ```
@@ -284,7 +284,7 @@ __示例__
 
 
 ```js
-const stream = minioClient.listObjectsV2('mybucket','', true)
+const stream = s3Client.listObjectsV2('mybucket','', true)
 stream.on('data', function(obj) { console.log(obj) } )
 stream.on('error', function(err) { console.log(err) } )
 ```
@@ -322,7 +322,7 @@ __示例__
 
 
 ```js
-const Stream = minioClient.listIncompleteUploads('mybucket', '', true)
+const Stream = s3Client.listIncompleteUploads('mybucket', '', true)
 Stream.on('data', function(obj) {
   console.log(obj)
 })
@@ -355,7 +355,7 @@ __示例__
 
 ```js
 let size = 0
-const dataStream = await minioClient.getObject('mybucket', 'photo.jpg')
+const dataStream = await s3Client.getObject('mybucket', 'photo.jpg')
 dataStream.on('data', function(chunk) {
     size += chunk.length
 })
@@ -387,7 +387,7 @@ __示例__
 ```js
 let size = 0
 // reads 30 bytes from the offset 10.
-const dataStream = await minioClient.getPartialObject('mybucket', 'photo.jpg', 10, 30)
+const dataStream = await s3Client.getPartialObject('mybucket', 'photo.jpg', 10, 30)
 dataStream.on('data', function(chunk) {
     size += chunk.length
 })
@@ -418,7 +418,7 @@ __示例__
 
 
 ```js
-minioClient.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function(err) {
+s3Client.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function(err) {
   if (err) {
     return console.log(err)
   }
@@ -457,7 +457,7 @@ const fileStat = Fs.stat(file, function(err, stats) {
   if (err) {
     return console.log(err)
   }
-  minioClient.putObject('mybucket', '40mbfile', fileStream, stats.size, function(err, etag) {
+  s3Client.putObject('mybucket', '40mbfile', fileStream, stats.size, function(err, etag) {
     return console.log(err, etag) // err should be null
   })
 })
@@ -482,7 +482,7 @@ __示例__
 
 ```js
 const buffer = 'Hello World'
-minioClient.putObject('mybucket', 'hello-file', buffer, function(err, etag) {
+s3Client.putObject('mybucket', 'hello-file', buffer, function(err, etag) {
   return console.log(err, etag) // err should be null
 })
 ```
@@ -507,7 +507,7 @@ __示例__
 
 ```js
 const file = '/tmp/40mbfile'
-minioClient.fPutObject('mybucket', '40mbfile', file, 'application/octet-stream', function(err, etag) {
+s3Client.fPutObject('mybucket', '40mbfile', file, 'application/octet-stream', function(err, etag) {
   return console.log(err, etag) // err should be null
 })
 ```
@@ -531,9 +531,9 @@ __参数__
 __示例__
 
 ```js
-const conds = new Minio.CopyConditions()
+const conds = new S3.CopyConditions()
 conds.setMatchETag('bd891862ea3e22c93ed53a098218791d')
-minioClient.copyObject('mybucket', 'newobject', '/mybucket/srcobject', conds, function(e, data) {
+s3Client.copyObject('mybucket', 'newobject', '/mybucket/srcobject', conds, function(e, data) {
   if (e) {
     return console.log(e)
   }
@@ -571,7 +571,7 @@ __示例__
 
 
 ```js
-minioClient.statObject('mybucket', 'photo.jpg', function(err, stat) {
+s3Client.statObject('mybucket', 'photo.jpg', function(err, stat) {
   if (err) {
     return console.log(err)
   }
@@ -599,7 +599,7 @@ __示例__
 
 ```js
 try {
-  await minioClient.removeObject('mybucket', 'photo.jpg')
+  await s3Client.removeObject('mybucket', 'photo.jpg')
   console.log('Removed the object')
 } catch (err) {
   console.log('Unable to remove object', err)
@@ -625,7 +625,7 @@ __示例__
 
 
 ```js
-minioClient.removeIncompleteUpload('mybucket', 'photo.jpg', function(err) {
+s3Client.removeIncompleteUpload('mybucket', 'photo.jpg', function(err) {
   if (err) {
     return console.log('Unable to remove incomplete object', err)
   }
@@ -663,7 +663,7 @@ __示例1__
 ```js
 // presigned url for 'getObject' method.
 // expires in a day.
-minioClient.presignedUrl('GET', 'mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
+s3Client.presignedUrl('GET', 'mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
   if (err) return console.log(err)
   console.log(presignedUrl)
 })
@@ -677,7 +677,7 @@ __示例2__
 // presigned url for 'listObject' method.
 // Lists objects in 'myBucket' with prefix 'data'.
 // Lists max 1000 of them.
-minioClient.presignedUrl('GET', 'mybucket', '', 1000, {'prefix': 'data', 'max-keys': 1000}, function(err, presignedUrl) {
+s3Client.presignedUrl('GET', 'mybucket', '', 1000, {'prefix': 'data', 'max-keys': 1000}, function(err, presignedUrl) {
   if (err) return console.log(err)
   console.log(presignedUrl)
 })
@@ -706,7 +706,7 @@ __示例__
 
 ```js
 // expires in a day.
-minioClient.presignedGetObject('mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
+s3Client.presignedGetObject('mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
   if (err) return console.log(err)
   console.log(presignedUrl)
 })
@@ -734,7 +734,7 @@ __示例__
 
 ```js
 // expires in a day.
-minioClient.presignedPutObject('mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
+s3Client.presignedPutObject('mybucket', 'hello.txt', 24*60*60, function(err, presignedUrl) {
   if (err) return console.log(err)
   console.log(presignedUrl)
 })
@@ -750,7 +750,7 @@ __参数__
 
 | 参数  |  类型 | 描述  |
 |---|---|---|
-| `policy`  | _object_  | 通过minioClient.newPostPolicy()创建的Policy对象。 |
+| `policy`  | _object_  | 通过s3Client.newPostPolicy()创建的Policy对象。 |
 | `callback(err, {postURL, formData})`  | _function_  |如果`err`不是null则代表有错误。`postURL`用于使用post请求上传。`formData`是POST请求体中的键值对对象。如果没有传callback的话，则返回一个`Promise`对象。 |
 
 
@@ -758,7 +758,7 @@ __参数__
 
 
 ```js
-const policy = minioClient.newPostPolicy()
+const policy = s3Client.newPostPolicy()
 ```
 
 设置上传策略：
@@ -800,7 +800,7 @@ policy.setUserMetaData({
 
 
 ```js
-minioClient.presignedPostPolicy(policy, function(err, data) {
+s3Client.presignedPostPolicy(policy, function(err, data) {
   if (err) return console.log(err)
 
   const req = superagent.post(data.postURL)
@@ -843,7 +843,7 @@ __示例__
 
 
 ```js
-minioClient.getBucketNotification('mybucket', function(err, bucketNotificationConfig) {
+s3Client.getBucketNotification('mybucket', function(err, bucketNotificationConfig) {
   if (err) return console.log(err)
   console.log(bucketNotificationConfig)
 })
@@ -869,20 +869,20 @@ __示例__
 
 ```js
 // Create a new notification object
-const bucketNotification = new Minio.NotificationConfig();
+const bucketNotification = new S3.NotificationConfig();
 
 // Setup a new Queue configuration
-const arn = Minio.buildARN('aws', 'sqs', 'us-west-2', '1', 'webhook')
-const queue = new Minio.QueueConfig(arn)
+const arn = S3.buildARN('aws', 'sqs', 'us-west-2', '1', 'webhook')
+const queue = new S3.QueueConfig(arn)
 queue.addFilterSuffix('.jpg')
 queue.addFilterPrefix('myphotos/')
-queue.addEvent(Minio.ObjectReducedRedundancyLostObject)
-queue.addEvent(Minio.ObjectCreatedAll)
+queue.addEvent(S3.ObjectReducedRedundancyLostObject)
+queue.addEvent(S3.ObjectCreatedAll)
 
 // Add the queue to the overall notification object
 bucketNotification.add(queue)
 
-minioClient.setBucketNotification('mybucket', bucketNotification, function(err) {
+s3Client.setBucketNotification('mybucket', bucketNotification, function(err) {
   if (err) return console.log(err)
   console.log('Success')
 })
@@ -903,7 +903,7 @@ __参数__
 
 
 ```js
-minioClient.removeAllBucketNotification('my-bucketname', function(e) {
+s3Client.removeAllBucketNotification('my-bucketname', function(e) {
   if (e) {
     return console.log(e)
   }
@@ -914,7 +914,7 @@ minioClient.removeAllBucketNotification('my-bucketname', function(e) {
 <a name="listenBucketNotification"></a>
 ### listenBucketNotification(bucketName, prefix, suffix, events)
 
-监听存储桶上的通知，可通过前缀、后缀、事件类型进行过滤。使用本API并不需要预先设置存储桶通知。这是Minio的一个扩展API，服务端基于过来的请求使用唯一ID自动注册或者取消注册。
+监听存储桶上的通知，可通过前缀、后缀、事件类型进行过滤。使用本API并不需要预先设置存储桶通知。这是Hanzo S3的一个扩展API，服务端基于过来的请求使用唯一ID自动注册或者取消注册。
 
 返回一个`EventEmitter`对象，它可以广播一个`通知`事件。
 
@@ -929,10 +929,10 @@ __参数__
 | `suffix`  | _string_  | 用于过滤通知的对象名称后缀。 |
 | `events`  | _Array_ | 在指定事件类型上开启通知。 |
 
-这里是你要的[完整示例](https://github.com/hanzos3/js-sdk/blob/master/examples/minio/listen-bucket-notification.js)，拿走不谢。
+这里是你要的[完整示例](https://github.com/hanzos3/js-sdk/blob/master/examples/s3/listen-bucket-notification.js)，拿走不谢。
 
 ```js
-const listener = minioClient.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
+const listener = s3Client.listenBucketNotification('my-bucketname', 'photos/', '.jpg', ['s3:ObjectCreated:*'])
 listener.on('notification', function(record) {
   // For example: 's3:ObjectCreated:Put event occurred (2016-08-23T18:26:07.214Z)'
   console.log('%s event occurred (%s)', record.eventName, record.eventTime)
@@ -955,7 +955,7 @@ __参数__
 
 ```js
 // Retrieve bucket policy of 'my-bucketname' that applies to all objects that
-const policy = await minioClient.getBucketPolicy('my-bucketname')
+const policy = await s3Client.getBucketPolicy('my-bucketname')
 
 console.log(`Bucket policy file: ${policy}`)
 ```
@@ -977,7 +977,7 @@ __参数__
 ```js
 // Set the bucket policy of `my-bucketname` to `readonly` (only allow retrieval),
 // but only for objects that start with 'img-'.
-await minioClient.setBucketPolicy('my-bucketname', JSON.stringify(policy))
+await s3Client.setBucketPolicy('my-bucketname', JSON.stringify(policy))
 ```
 
 

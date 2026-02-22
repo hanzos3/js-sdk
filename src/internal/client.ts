@@ -333,7 +333,7 @@ export class TypedClient {
     //       HanzoS3 (OS; ARCH) LIB/VER APP/VER
     //
     const libraryComments = `(${process.platform}; ${process.arch})`
-    const libraryAgent = `HanzoS3 ${libraryComments} minio-js/${Package.version}`
+    const libraryAgent = `HanzoS3 ${libraryComments} hanzo-s3/${Package.version}`
     // User agent block ends.
 
     this.transport = transport
@@ -400,7 +400,7 @@ export class TypedClient {
     }
   }
   /**
-   * Minio extensions that aren't necessary present for Amazon S3 compatible storage servers
+   * S3 extensions that aren't necessarily present for Amazon S3 compatible storage servers
    */
   get extensions() {
     return this.clientExtensions
@@ -1147,7 +1147,7 @@ export class TypedClient {
 
   /**
    * download object content to a file.
-   * This method will create a temp file named `${filename}.${base64(etag)}.part.hanzos3` when downloading.
+   * This method will create a temp file named `${filename}.${base64(etag)}.part.s3` when downloading.
    *
    * @param bucketName - name of the bucket
    * @param objectName - name of the object
@@ -1170,7 +1170,7 @@ export class TypedClient {
       let partFileStream: stream.Writable
       const objStat = await this.statObject(bucketName, objectName, getOpts)
       const encodedEtag = Buffer.from(objStat.etag).toString('base64')
-      const partFile = `${filePath}.${encodedEtag}.part.hanzos3`
+      const partFile = `${filePath}.${encodedEtag}.part.s3`
 
       await fsp.mkdir(path.dirname(filePath), { recursive: true })
 
@@ -1255,7 +1255,7 @@ export class TypedClient {
       headers['X-Amz-Bypass-Governance-Retention'] = true
     }
     if (removeOpts?.forceDelete) {
-      headers['x-minio-force-delete'] = true
+      headers['x-force-delete'] = true
     }
 
     const queryParams: Record<string, string> = {}

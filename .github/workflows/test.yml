@@ -19,28 +19,30 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
 
     env:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
-      MINIO_KMS_SECRET_KEY: 'my-minio-key:OSMM+vkKUTCvQs9YL/CVMIMt43HFhkUpqJxTmGl6rYw='
+      # NOTE: MINIO_* env vars are required by the upstream S3-compatible test server binary
+      MINIO_ROOT_USER: s3admin
+      MINIO_ROOT_PASSWORD: s3admin123
+      MINIO_KMS_SECRET_KEY: 'my-s3-key:OSMM+vkKUTCvQs9YL/CVMIMt43HFhkUpqJxTmGl6rYw='
       MINIO_CI_CD: true
       SERVER_ENDPOINT: localhost:9000
 
     steps:
-      - name: Start Server
+      - name: Start S3 Test Server (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          wget --quiet -O /tmp/minio https://dl.min.io/server/minio/release/linux-amd64/minio
-          chmod +x /tmp/minio
-          /tmp/minio -C /tmp/minio-config server /tmp/data{1...4} &
+          wget --quiet -O /tmp/s3-server https://dl.min.io/server/minio/release/linux-amd64/minio
+          chmod +x /tmp/s3-server
+          /tmp/s3-server -C /tmp/s3-config server /tmp/data{1...4} &
 
-      - run: Invoke-WebRequest -Uri https://dl.minio.io/server/minio/release/windows-amd64/minio.exe -OutFile $HOME/minio.exe
+      - name: Download S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
+        run: Invoke-WebRequest -Uri https://dl.minio.io/server/minio/release/windows-amd64/minio.exe -OutFile $HOME/s3-server.exe
 
-      - name: Start Hanzo S3 Server
+      - name: Start S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         shell: bash
         run: |
-          $HOME/minio.exe -C $HOME/tmp/minio-config server $HOME/tmp/data{1...4} &
+          $HOME/s3-server.exe -C $HOME/tmp/s3-config server $HOME/tmp/data{1...4} &
 
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node_version }}
@@ -57,7 +59,7 @@ jobs:
           CI: true
           MINIO_CI_CD: true
           MINT_MODE: full
-          ACCESS_KEY: minio
-          SECRET_KEY: minio123
+          ACCESS_KEY: s3admin
+          SECRET_KEY: s3admin123
           ENABLE_HTTPS: 0
         run: npm run test

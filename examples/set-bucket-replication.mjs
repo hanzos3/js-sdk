@@ -16,8 +16,8 @@
 
 // Note: YOUR-ACCESSKEYID, YOUR-SECRETACCESSKEY and my-bucketname are
 // dummy values, please replace them with original values.
-import * as Minio from 'minio'
-const s3Client = new Minio.Client({
+import * as S3 from '@hanzo/s3'
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -65,10 +65,10 @@ try {
 /**
  * Steps to configure bucket replication (using Hanzo S3 server)
  * Create Site 1
- * CI=true  MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem{1...4}  --address ":22000" --console-address ":9025"
+ * CI=true  S3_ROOT_USER=admin S3_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem{1...4}  --address ":22000" --console-address ":9025"
  * mc alias set local22 http://localhost:22000 admin admin123
  * Create Site 2
- * CI=true  MINIO_ROOT_USER=admin MINIO_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem-1{1...4}  --address ":23000" --console-address ":9035"
+ * CI=true  S3_ROOT_USER=admin S3_ROOT_PASSWORD=admin123 hanzos3 server /tmp/sem-1{1...4}  --address ":23000" --console-address ":9035"
  * mc alias set local23 http://localhost:23000 admin admin123
  *
  * mc mb local22/source-bucket

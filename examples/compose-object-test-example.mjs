@@ -19,10 +19,10 @@
 import fs from 'node:fs'
 import os from 'node:os'
 
-import * as Minio from 'minio'
+import * as S3 from '@hanzo/s3'
 import splitFile from 'split-file'
 
-const s3Client = new Minio.Client({
+const s3Client = new S3.Client({
   endPoint: 's3.amazonaws.com',
   accessKey: 'YOUR-ACCESSKEYID',
   secretKey: 'YOUR-SECRETACCESSKEY',
@@ -69,13 +69,13 @@ const sampleRunComposeObject = async () => {
 
     console.log('Uploaded part Files: ', names)
     const sourcePartObjList = partObjNameList.map((partObjName) => {
-      return new Minio.CopySourceOptions({
+      return new S3.CopySourceOptions({
         Bucket: bucketName,
         Object: partObjName,
       })
     })
 
-    const destObjConfig = new Minio.CopyDestinationOptions({
+    const destObjConfig = new S3.CopyDestinationOptions({
       Bucket: bucketName,
       Object: composedObjName,
       Headers: {
