@@ -19,24 +19,23 @@ jobs:
         os: [ ubuntu-latest, windows-latest ]
 
     env:
-      # NOTE: MINIO_* env vars are required by the upstream S3-compatible test server binary
-      MINIO_ROOT_USER: s3admin
-      MINIO_ROOT_PASSWORD: s3admin123
-      MINIO_KMS_SECRET_KEY: 'my-s3-key:OSMM+vkKUTCvQs9YL/CVMIMt43HFhkUpqJxTmGl6rYw='
-      MINIO_CI_CD: true
+      S3_ROOT_USER: s3admin
+      S3_ROOT_PASSWORD: s3admin123
+      S3_KMS_SECRET_KEY: 'my-s3-key:OSMM+vkKUTCvQs9YL/CVMIMt43HFhkUpqJxTmGl6rYw='
+      S3_CI_CD: true
       SERVER_ENDPOINT: localhost:9000
 
     steps:
       - name: Start S3 Test Server (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          wget --quiet -O /tmp/s3-server https://dl.min.io/server/minio/release/linux-amd64/minio
+          wget --quiet -O /tmp/s3-server https://dl.hanzo.space/server/s3/release/linux-amd64/s3
           chmod +x /tmp/s3-server
           /tmp/s3-server -C /tmp/s3-config server /tmp/data{1...4} &
 
       - name: Download S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
-        run: Invoke-WebRequest -Uri https://dl.minio.io/server/minio/release/windows-amd64/minio.exe -OutFile $HOME/s3-server.exe
+        run: Invoke-WebRequest -Uri https://dl.hanzo.space/server/s3/release/windows-amd64/s3.exe -OutFile $HOME/s3-server.exe
 
       - name: Start S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
@@ -57,7 +56,7 @@ jobs:
         timeout-minutes: 10
         env:
           CI: true
-          MINIO_CI_CD: true
+          S3_CI_CD: true
           MINT_MODE: full
           ACCESS_KEY: s3admin
           SECRET_KEY: s3admin123
