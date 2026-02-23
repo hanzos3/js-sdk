@@ -29,13 +29,13 @@ jobs:
       - name: Start S3 Test Server (Linux)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
-          wget --quiet -O /tmp/s3-server https://dl.hanzo.space/server/s3/release/linux-amd64/s3
+          wget --quiet -O /tmp/s3-server https://github.com/hanzoai/s3/releases/latest/download/s3-linux-amd64
           chmod +x /tmp/s3-server
           /tmp/s3-server -C /tmp/s3-config server /tmp/data{1...4} &
 
       - name: Download S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
-        run: Invoke-WebRequest -Uri https://dl.hanzo.space/server/s3/release/windows-amd64/s3.exe -OutFile $HOME/s3-server.exe
+        run: Invoke-WebRequest -Uri https://github.com/hanzoai/s3/releases/latest/download/s3-windows-amd64.exe -OutFile $HOME/s3-server.exe
 
       - name: Start S3 Test Server (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
